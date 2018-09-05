@@ -88,30 +88,30 @@ module.exports = {
             })
             .then(message => {
               console.log(message.sid);
-              // return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
-              // return res.status(200).json({
-              //   message: `New Hobby Added - ${req.body.title}`
-              // });
+              //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
+              return res.json(200, {
+                message: `New Hobby Added - ${req.body.title}`
+              });
             })
             .catch(error => {
               console.log(error);
               //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
-              return res.json(200, {
-                message: `New Hobby Added - ${req.body.title}`,
-                error: error
-              });
+              // return res.json(200, {
+              //   message: `New Hobby Added - ${req.body.title}`,
+              //   error: error
+              // });
             });
         } else {
 
           //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have added ${req.body.title} previously`);
-          return res.status(200).json({
+          return res.json(200, {
             message: `You have added ${req.body.title} previously`
           })
         }
       })
     } else {
       //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have entered an invalid hobby, try again`);
-      return res.status(400).json({
+      return res.json(400, {
         message: 'Invalid Hobby'
       })
     };
