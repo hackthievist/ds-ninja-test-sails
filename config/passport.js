@@ -25,7 +25,8 @@ passport.use(new LocalStrategy({
             let userDetails = {
                 email: user.email,
                 username: user.username,
-                id: user.id
+                id: user.id,
+                phone: user.phone
             };
             return cb(null, userDetails, { message: 'Login Successful' });
         });
