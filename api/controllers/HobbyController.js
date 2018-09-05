@@ -84,7 +84,7 @@ module.exports = {
             .create({
               body: `Hello, user ${req.session.username}, you have added a new hobby - ${req.body.title}; Sobogun Ifeoluwa, For Delivery Science`,
               from: process.env.TWILIO_PHONE_NUMBER,
-              to: `+${req.session.phone}`
+              to: `${req.session.phone}`
             })
             .then(message => {
               console.log(message.sid);
