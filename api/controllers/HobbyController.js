@@ -89,6 +89,7 @@ module.exports = {
             })
             .catch(error => {
               console.log(error);
+              return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
             });
         } else {
 
