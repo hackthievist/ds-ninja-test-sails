@@ -14,7 +14,7 @@ module.exports = {
     }, {
       username: req.body.username,
       email: req.body.email,
-      phone: req.body.phone,
+      phone: `+${req.body.phone}`,
       password: req.body.password
     }, (err, existingUser, newUser) => {
       if (err) {
