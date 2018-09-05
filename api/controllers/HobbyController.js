@@ -81,28 +81,23 @@ module.exports = {
             .create({
               body: `Hello, user ${req.session.username}, you have added a new hobby - ${req.body.title}; Sobogun Ifeoluwa, For Delivery Science`,
               from: process.env.TWILIO_PHONE_NUMBER,
-              to: `+2348182341135`
+              to: `${req.session.phone}`
             })
             .then(message => {
               console.log(message.sid);
               return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
             })
-            //.done()
             .catch(error => {
               console.log(error);
             });
         } else {
-          message = 'You have added that hobby previously';
-          console.log('Previous');
-          return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?ExistingHobby`);
+
+          return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have added ${req.body.title} previously`);
         }
       })
     } else {
-      message = 'Please enter a valid hobby';
       console.log('Invalid');
-      return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?InvalidHobby`);
+      return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have entered an invalid hobby, try again`);
     };
-    console.log('end');
-    //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard`);
   }
 }
