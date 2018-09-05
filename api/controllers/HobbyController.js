@@ -35,13 +35,13 @@ module.exports = {
         owner: req.body.owner.trim()
       }, (err, existingHobby, newHobby) => {
         if (err) {
-          return res.json(400, {
-            message: 'Hobby could not be added'
-          })
+          message = 'Hobby could not be added';
+          console.log("Can't add");
         }
 
         if (newHobby) {
           message = `New Hobby Added - ${req.body.title}`;
+          console.log('Added');
 
           const params = {
             Destination: {
@@ -84,7 +84,7 @@ module.exports = {
             .create({
               body: `Hello, user ${req.session.username}, you have added a new hobby - ${req.body.title}; Sobogun Ifeoluwa, For Delivery Science`,
               from: process.env.TWILIO_PHONE_NUMBER,
-              to: req.session.phone
+              to: `+${req.session.phone}`
             })
             .then(message => {
               console.log(message.sid);
@@ -96,15 +96,15 @@ module.exports = {
             .catch(error => {
               console.log(error);
               //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
-              // return res.json(200, {
-              //   message: `New Hobby Added - ${req.body.title}`,
-              //   error: error
-              // });
+              return res.json(200, {
+                message: `New Hobby Added - ${req.body.title}`,
+                error: error
+              });
             });
         } else {
 
           //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have added ${req.body.title} previously`);
-          return res.json(200, {
+          return res.json(304, {
             message: `You have added ${req.body.title} previously`
           })
         }
