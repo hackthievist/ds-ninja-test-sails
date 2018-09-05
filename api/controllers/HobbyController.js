@@ -104,7 +104,7 @@ module.exports = {
         } else {
 
           //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have added ${req.body.title} previously`);
-          return res.json(304, {
+          return res.json(300, {
             message: `You have added ${req.body.title} previously`
           })
         }
