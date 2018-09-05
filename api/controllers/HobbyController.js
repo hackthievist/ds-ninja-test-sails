@@ -19,8 +19,8 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
-// var phone = req.session.phone;
-// var email = req.session.email;
+ var phone = req.session.phone;
+ var email = req.session.email;
 
 
 module.exports = {
@@ -105,14 +105,14 @@ module.exports = {
         } else {
 
           //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have added ${req.body.title} previously`);
-          return res.json(300, {
+          return res.json({
             message: `You have added ${req.body.title} previously`
           })
         }
       })
     } else {
       //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have entered an invalid hobby, try again`);
-      return res.json(400, {
+      return res.json({
         message: 'Invalid Hobby'
       })
     };
