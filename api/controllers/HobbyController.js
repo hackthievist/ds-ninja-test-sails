@@ -27,7 +27,6 @@ module.exports = {
 
   addhobby: function (req, res) {
     if (req.body.title.trim().length !== 0 && req.body.owner.trim().length !== 0) {
-      console.log(req.session.phone);
       Hobby.findOrCreate({
         title: req.body.title,
         owner: req.body.owner
@@ -36,13 +35,13 @@ module.exports = {
         owner: req.body.owner.trim()
       }, (err, existingHobby, newHobby) => {
         if (err) {
-          message = 'Hobby could not be added';
-          console.log("Can't add");
+          return res.json(400, {
+            message: 'Hobby could not be added'
+          })
         }
 
         if (newHobby) {
           message = `New Hobby Added - ${req.body.title}`;
-          console.log('Added');
 
           const params = {
             Destination: {
@@ -97,10 +96,10 @@ module.exports = {
             .catch(error => {
               console.log(error);
               //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
-              return res.json(200, {
-                message: `New Hobby Added - ${req.body.title}`,
-                error: error
-              });
+              // return res.json(200, {
+              //   message: `New Hobby Added - ${req.body.title}`,
+              //   error: error
+              // });
             });
         } else {
 
