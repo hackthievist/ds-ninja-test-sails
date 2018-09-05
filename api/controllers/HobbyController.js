@@ -19,9 +19,6 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
- var phone = req.session.phone;
- var email = req.session.email;
-
 
 module.exports = {
 
