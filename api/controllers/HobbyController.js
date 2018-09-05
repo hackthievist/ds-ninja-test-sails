@@ -27,6 +27,7 @@ module.exports = {
 
   addhobby: function (req, res) {
     if (req.body.title.trim().length !== 0 && req.body.owner.trim().length !== 0) {
+      console.log(req.session.phone);
       Hobby.findOrCreate({
         title: req.body.title,
         owner: req.body.owner
@@ -84,7 +85,7 @@ module.exports = {
             .create({
               body: `Hello, user ${req.session.username}, you have added a new hobby - ${req.body.title}; Sobogun Ifeoluwa, For Delivery Science`,
               from: process.env.TWILIO_PHONE_NUMBER,
-              to: `${req.session.phone}`
+              to: req.session.phone
             })
             .then(message => {
               console.log(message.sid);
@@ -104,7 +105,7 @@ module.exports = {
         } else {
 
           //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have added ${req.body.title} previously`);
-          return res.json(304, {
+          return res.json(200, {
             message: `You have added ${req.body.title} previously`
           })
         }
