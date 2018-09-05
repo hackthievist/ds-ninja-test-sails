@@ -89,7 +89,7 @@ module.exports = {
             .then(message => {
               console.log(message.sid);
               //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
-              return res.json(200, {
+              return res.status(200).json({
                 message: `New Hobby Added - ${req.body.title}`
               });
             })
@@ -104,14 +104,14 @@ module.exports = {
         } else {
 
           //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have added ${req.body.title} previously`);
-          return res.json(200, {
+          return res.status(200).json({
             message: `You have added ${req.body.title} previously`
           })
         }
       })
     } else {
       //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have entered an invalid hobby, try again`);
-      return res.json(400, {
+      return res.status(400).json({
         message: 'Invalid Hobby'
       })
     };
