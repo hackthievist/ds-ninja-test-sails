@@ -81,24 +81,36 @@ module.exports = {
             .create({
               body: `Hello, user ${req.session.username}, you have added a new hobby - ${req.body.title}; Sobogun Ifeoluwa, For Delivery Science`,
               from: process.env.TWILIO_PHONE_NUMBER,
-              to: `${req.session.phone}`
+              to: `+${req.session.phone}`
             })
             .then(message => {
               console.log(message.sid);
-              return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
+              //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
+              return res.json(200, {
+                message: `New Hobby Added - ${req.body.title}`
+              });
             })
             .catch(error => {
               console.log(error);
-              return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
+              //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
+              return res.json(200, {
+                message: `New Hobby Added - ${req.body.title}`,
+                error: error
+              });
             });
         } else {
 
-          return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have added ${req.body.title} previously`);
+          //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have added ${req.body.title} previously`);
+          return res.json(304, {
+            message: `You have added ${req.body.title} previously`
+          })
         }
       })
     } else {
-      console.log('Invalid');
-      return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have entered an invalid hobby, try again`);
+      //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have entered an invalid hobby, try again`);
+      return res.json(400, {
+        message: 'Invalid Hobby'
+      })
     };
   }
 }
