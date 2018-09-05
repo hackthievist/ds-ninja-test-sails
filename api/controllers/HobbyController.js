@@ -26,6 +26,7 @@ const client = require('twilio')(accountSid, authToken);
 module.exports = {
 
   addhobby: function (req, res) {
+    console.log(req.session);
     if (req.body.title.trim().length !== 0 && req.body.owner.trim().length !== 0) {
       Hobby.findOrCreate({
         title: req.body.title,
@@ -88,7 +89,6 @@ module.exports = {
             })
             .then(message => {
               console.log(message.sid);
-              console.log(req.session);
               //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
               return res.json(200, {
                 message: `New Hobby Added - ${req.body.title}`
