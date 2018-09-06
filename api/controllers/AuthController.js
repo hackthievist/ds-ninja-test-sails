@@ -30,7 +30,6 @@ module.exports = {
       req.session.phone = user.phone;
       statusMessage = '';
       console.log(req.session);
-      //return res.redirect('https://delivery-science-frontend.herokuapp.com/dashboard');
       return res.json({
         isAuthenticated: true,
       });
@@ -43,6 +42,7 @@ module.exports = {
     req.session.destroy();
     req.logout();
     res.json({
+      message: 'Logged Out',
       isAuthenticated: false,
     })
   }
