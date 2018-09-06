@@ -26,7 +26,10 @@ module.exports = {
       if (newUser) {
         statusMessage = 'USER SUCCESSFULLY CREATED';
       }
-      res.redirect(`https://delivery-science-frontend.herokuapp.com/login?${statusMessage}`);
+      //res.redirect(`https://delivery-science-frontend.herokuapp.com/login?${statusMessage}`);
+      res.json({
+        statusMessage: statusMessage
+      });
     });
 
   }
