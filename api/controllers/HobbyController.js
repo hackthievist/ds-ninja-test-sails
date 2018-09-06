@@ -33,14 +33,12 @@ module.exports = {
         owner: req.body.owner.trim()
       }, (err, existingHobby, newHobby) => {
         if (err) {
-          message = 'Hobby could not be added';
-          console.log("Can't add");
+          res.json({
+            message:'Hobby could not be added',
+          })
         }
 
         if (newHobby) {
-          message = `New Hobby Added - ${req.body.title}`;
-          console.log('Added');
-
           const params = {
             Destination: {
               ToAddresses: [req.session.email],
