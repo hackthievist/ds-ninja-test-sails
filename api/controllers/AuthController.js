@@ -13,7 +13,10 @@ module.exports = {
     passport.authenticate('local', (err, user, info) => {
       if ((err) || (!user)) {
         statusMessage = 'Wrong Credentials';
-        return res.redirect('https://delivery-science-frontend.herokuapp.com/login?message=wrongCredentials');
+        //return res.redirect('https://delivery-science-frontend.herokuapp.com/login?message=wrongCredentials');
+        return res.json({
+          isAuthenticated: false,
+        });
       }
 
       message = '';
@@ -27,7 +30,10 @@ module.exports = {
       req.session.phone = user.phone;
       statusMessage = '';
       console.log(req.session);
-      return res.redirect('https://delivery-science-frontend.herokuapp.com/dashboard');
+      //return res.redirect('https://delivery-science-frontend.herokuapp.com/dashboard');
+      return res.json({
+        isAuthenticated: true,
+      });
 
     })(req, res);
 
