@@ -26,7 +26,7 @@ module.exports = {
       phone = user.phone;
       req.session.phone = user.phone;
       statusMessage = '';
-      res.redirect('https://delivery-science-frontend.herokuapp.com/dashboard');
+      return res.redirect('https://delivery-science-frontend.herokuapp.com/dashboard');
 
     })(req, res);
 
