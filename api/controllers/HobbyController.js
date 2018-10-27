@@ -18,12 +18,12 @@ const ses = new AWS.SES();
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
+const responseObject = {};
 
 
 module.exports = {
 
   addhobby: function (req, res) {
-    console.log(req.session);
     if (req.body.title.trim().length !== 0 && req.body.owner.trim().length !== 0) {
       Hobby.findOrCreate({
         title: req.body.title,
@@ -70,10 +70,10 @@ module.exports = {
           const sendEmail = ses.sendEmail(params).promise();
 
           sendEmail.then(data => {
-              console.log('Email submitted to SES', data);
+              Object.assign(responseObject, data);
             })
             .catch(error => {
-              console.log(error);
+              Object.assign(responseObject, error);
             });
 
           client.messages
@@ -83,30 +83,28 @@ module.exports = {
               to: `+${req.session.phone}`
             })
             .then(message => {
-              console.log(message.sid);
-              //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
               return res.json(200, {
-                message: `New Hobby Added - ${req.body.title}`
+                message: `New Hobby Added - ${req.body.title}`,
+                textStatus: {
+                  status: message.status,
+                  SID: message.sid,
+                },
+                user: owner,
               });
             })
             .catch(error => {
-              console.log(error);
-              //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?New Hobby Added - ${req.body.title}`);
               return res.json(200, {
                 message: `New Hobby Added - ${req.body.title}`,
                 error: error
               });
             });
         } else {
-
-          //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have added ${req.body.title} previously`);
           return res.json({
             message: `You have added ${req.body.title} previously`
           })
         }
       })
     } else {
-      //return res.redirect(`https://delivery-science-frontend.herokuapp.com/dashboard?You have entered an invalid hobby, try again`);
       return res.json({
         message: 'Invalid Hobby'
       })
