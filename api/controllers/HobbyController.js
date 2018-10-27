@@ -83,7 +83,7 @@ module.exports = {
               to: `+${req.session.phone}`
             })
             .then(message => {
-              return res.json(200, {
+              Object.assign(responseObject, {
                 message: `New Hobby Added - ${req.body.title}`,
                 textStatus: {
                   status: message.status,
@@ -91,16 +91,20 @@ module.exports = {
                 },
                 user: owner,
               });
+              return res.json(200, responseObject);
             })
             .catch(error => {
-              return res.json(200, {
+              Object.assign(responseObject, {
                 message: `New Hobby Added - ${req.body.title}`,
-                error: error
+                hobby: newHobby,
+                twilioError: error
               });
+              return res.json(200, responseObject);
             });
         } else {
           return res.json({
-            message: `You have added ${req.body.title} previously`
+            message: `You have added ${req.body.title} previously`,
+            hobby: existingHobby,
           })
         }
       })
