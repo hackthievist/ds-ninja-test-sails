@@ -25,7 +25,7 @@ module.exports = {
 
   addhobby: function (req, res) {
     if (req.body.title.trim().length !== 0 && req.body.owner.trim().length !== 0) {
-      Hobby.findOrCreate({
+      const hobby = Hobby.findOrCreate({
         title: req.body.title,
         owner: req.body.owner
       }, {
@@ -70,10 +70,10 @@ module.exports = {
           const sendEmail = ses.sendEmail(params).promise();
 
           sendEmail.then(data => {
-              Object.assign(responseObject, data);
+              Object.assign(responseObject, { emailService: { data }});
             })
             .catch(error => {
-              Object.assign(responseObject, error);
+              Object.assign(responseObject, { emailService: { error }});
             });
 
           client.messages
@@ -96,7 +96,7 @@ module.exports = {
             .catch(error => {
               Object.assign(responseObject, {
                 message: `New Hobby Added - ${req.body.title}`,
-                hobby: newHobby,
+                hobby,
                 twilioError: error
               });
               return res.json(200, responseObject);
@@ -104,7 +104,7 @@ module.exports = {
         } else {
           return res.json({
             message: `You have added ${req.body.title} previously`,
-            hobby: existingHobby,
+            hobby,
           })
         }
       })
