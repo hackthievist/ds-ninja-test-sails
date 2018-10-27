@@ -23,8 +23,12 @@ const responseObject = {};
 
 module.exports = {
 
-  addhobby: function (req, res) {
+  addhobby: async function (req, res) {
     if (req.body.title.trim().length !== 0 && req.body.owner.trim().length !== 0) {
+      user = await User.findOne(req.body.owner);
+      if(!user) {
+        return res.json(404, 'User not found');
+      }
       const hobby = Hobby.findOrCreate({
         title: req.body.title,
         owner: req.body.owner
@@ -41,14 +45,14 @@ module.exports = {
         if (newHobby) {
           const params = {
             Destination: {
-              ToAddresses: [req.session.email],
+              ToAddresses: [user.email],
             },
             ConfigurationSetName: 'DeliveryScience',
             Message: {
               Body: {
                 Html: {
                   Charset: 'UTF-8',
-                  Data: `<html><body><h1>Hello ${req.session.username}</h1><p>Thank you for using
+                  Data: `<html><body><h1>Hello ${user.username}</h1><p>Thank you for using
                                     Sobogun Ifeoluwa's Hobby App.</p>
                                     <p>You have successfully added a new hobby: 
                                     ${req.body.title}</p></body></html>
@@ -56,7 +60,7 @@ module.exports = {
                 },
                 Text: {
                   Charset: "UTF-8",
-                  Data: `Hello ${req.session.username}, you have added a new hobby`,
+                  Data: `Hello ${user.username}, you have added a new hobby`,
                 }
               },
               Subject: {
@@ -78,7 +82,7 @@ module.exports = {
 
           client.messages
             .create({
-              body: `Hello, user ${req.session.username}, you have added a new hobby - ${req.body.title}; Sobogun Ifeoluwa, For Delivery Science`,
+              body: `Hello, user ${user.username}, you have added a new hobby - ${req.body.title}; Sobogun Ifeoluwa, For Delivery Science`,
               from: process.env.TWILIO_PHONE_NUMBER,
               to: `+${req.session.phone}`
             })
@@ -104,7 +108,7 @@ module.exports = {
         } else {
           return res.json({
             message: `You have added ${req.body.title} previously`,
-            hobby,
+            hobby: existingHobby,
           })
         }
       })
