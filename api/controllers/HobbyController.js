@@ -74,17 +74,17 @@ module.exports = {
           const sendEmail = ses.sendEmail(params).promise();
 
           sendEmail.then(data => {
-              Object.assign(responseObject, { emailService: { data }});
+              Object.assign(responseObject, { emailService: { message: 'Email Sent', data }});
             })
             .catch(error => {
-              Object.assign(responseObject, { emailService: { error }});
+              Object.assign(responseObject, { emailService: { message: 'Email not sent', error }});
             });
 
           client.messages
             .create({
               body: `Hello, user ${user.username}, you have added a new hobby - ${req.body.title}; Sobogun Ifeoluwa, For Delivery Science`,
               from: process.env.TWILIO_PHONE_NUMBER,
-              to: `+${req.session.phone}`
+              to: `+${user.phone}`
             })
             .then(message => {
               Object.assign(responseObject, {
