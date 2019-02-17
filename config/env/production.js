@@ -48,7 +48,7 @@ module.exports = {
      ***************************************************************************/
     default: {
       adapter: 'sails-mongo',
-      url: 'mongodb://heroku_jfz8f60j:j2hqgs8dj43solup98r9k6viq5@ds115446.mlab.com:15446/heroku_jfz8f60j',
+      url: process.env.MONGO_URL,
       // adapter: 'sails-mysql',
       // url: 'mysql://user:password@host:port/database',
       //--------------------------------------------------------------------------
