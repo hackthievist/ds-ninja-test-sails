@@ -9,11 +9,10 @@ const passport = require('passport');
 
 module.exports = {
 
-  login: function (req, res) {
+  login: async function (req, res) {
     passport.authenticate('local', (err, user, info) => {
       if ((err) || (!user)) {
         statusMessage = 'Wrong Credentials';
-        //return res.redirect('https://delivery-science-frontend.herokuapp.com/login?message=wrongCredentials');
         return res.json({
           isAuthenticated: false,
         });
@@ -38,7 +37,7 @@ module.exports = {
 
   },
 
-  logout: function (req, res) {
+  logout: async function (req, res) {
     req.session.destroy();
     req.logout();
     res.json({

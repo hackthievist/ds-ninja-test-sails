@@ -7,12 +7,12 @@
 
 module.exports = {
   
-    viewDashboard: function(req, res) {
+    viewDashboard: async function(req, res) {
         if(!req.session.username) return res.redirect('https://delivery-science-frontend.herokuapp.com/login');
         return res.redirect('https://delivery-science-frontend.herokuapp.com/dashboard');
     },
 
-    submitForm: function(req, res) {
+    submitForm: async function(req, res) {
         res.redirect('/hobby');
     }
 

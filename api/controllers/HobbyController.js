@@ -24,17 +24,18 @@ const responseObject = {};
 module.exports = {
 
   addhobby: async function (req, res) {
-    if (req.body.title.trim().length !== 0 && req.body.owner.trim().length !== 0) {
-      user = await User.findOne(req.body.owner);
+    let data = req.body;
+    if (data.title.trim().length !== 0 && data.owner.trim().length !== 0) {
+      const user = await User.findOne(data.owner);
       if(!user) {
         return res.json(404, 'User not found');
       }
       const hobby = Hobby.findOrCreate({
-        title: req.body.title,
-        owner: req.body.owner
+        title: data.title,
+        owner: data.owner
       }, {
-        title: req.body.title.trim(),
-        owner: req.body.owner.trim()
+        title: data.title.trim(),
+        owner: data.owner.trim()
       }, (err, existingHobby, newHobby) => {
         if (err) {
           res.json({
@@ -55,7 +56,7 @@ module.exports = {
                   Data: `<html><body><h1>Hello ${user.username}</h1><p>Thank you for using
                                     Sobogun Ifeoluwa's Hobby App.</p>
                                     <p>You have successfully added a new hobby: 
-                                    ${req.body.title}</p></body></html>
+                                    ${data.title}</p></body></html>
                                     <h2><i>The more, the merrier</i></h2>`
                 },
                 Text: {
@@ -82,13 +83,13 @@ module.exports = {
 
           client.messages
             .create({
-              body: `Hello, user ${user.username}, you have added a new hobby - ${req.body.title}; Sobogun Ifeoluwa, For Delivery Science`,
+              body: `Hello, user ${user.username}, you have added a new hobby - ${data.title}; Sobogun Ifeoluwa, For Delivery Science`,
               from: process.env.TWILIO_PHONE_NUMBER,
               to: `+${user.phone}`
             })
             .then(message => {
               Object.assign(responseObject, {
-                message: `New Hobby Added - ${req.body.title}`,
+                message: `New Hobby Added - ${data.title}`,
                 textStatus: {
                   status: message.status,
                   SID: message.sid,
@@ -99,7 +100,7 @@ module.exports = {
             })
             .catch(error => {
               Object.assign(responseObject, {
-                message: `New Hobby Added - ${req.body.title}`,
+                message: `New Hobby Added - ${data.title}`,
                 hobby,
                 twilioError: error
               });
@@ -107,7 +108,7 @@ module.exports = {
             });
         } else {
           return res.json({
-            message: `You have added ${req.body.title} previously`,
+            message: `You have added ${data.title} previously`,
             hobby: existingHobby,
           })
         }

@@ -8,14 +8,15 @@ var statusMessage;
 module.exports = {
 
   createuser: function (req, res) {
+    let data = req.body
     User.findOrCreate({
-      username: req.body.username,
-      email: req.body.email,
+      username: data.username,
+      email: data.email,
     }, {
-      username: req.body.username,
-      email: req.body.email,
-      phone: `+${req.body.phone}`,
-      password: req.body.password
+      username: data.username,
+      email: data.email,
+      phone: `+${data.phone}`,
+      password: data.password
     }, (err, existingUser, newUser) => {
       if (err) {
         statusMessage = 'ERROR ADDING USER, CHECK YOUR DETAILS';
@@ -27,7 +28,7 @@ module.exports = {
         statusMessage = 'USER SUCCESSFULLY CREATED';
       }
       res.json({
-        statusMessage: statusMessage
+        statusMessage,
       });
     });
 
